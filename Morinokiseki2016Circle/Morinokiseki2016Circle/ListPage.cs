@@ -15,21 +15,27 @@ namespace Morinokiseki2016Circle
         bool loaded = false;
 
         StackLayout stackLayout = new StackLayout();
+        ScrollView scrollView = new ScrollView();
+        View tempContent;
+
 
         public ListPage()
         {
             Title = "サークルリスト";
-            var scroll = new ScrollView();
-            scroll.Content = stackLayout;
-            Content = scroll;
+            scrollView.Content = stackLayout;
+            Content = scrollView;
             this.Appearing += ListPage_Appearing;
         }
 
         async private void ListPage_Appearing(object sender, EventArgs e)
         {
+
             if (loaded) return;
+            var c = Content;
+            Content = new ActivityIndicator { Color = Color.Default, IsRunning = true, VerticalOptions = LayoutOptions.CenterAndExpand };
             await LoadData();
             SetData();
+            Content = c;
             loaded = true;
         }
 
@@ -52,12 +58,20 @@ namespace Morinokiseki2016Circle
 
         public void SetData()
         {
-            stackLayout.Children.Clear();
+            // stackLayout.Children.Clear();
+            var stackL = new StackLayout();
+            int i = 0;
             foreach (var d in Data)
             {
-                stackLayout.Children.Add(d.GetLayout());
-                stackLayout.Children.Add(new Label { Text = "-------------------------------", HorizontalOptions = LayoutOptions.CenterAndExpand });
+                stackL.Children.Add(d.GetLayout(i)); i++;
+                stackL.Children.Add(new Label
+                {
+                    Text = new string('-', 50),
+                    HorizontalOptions = LayoutOptions.CenterAndExpand
+                });
             }
+            scrollView.Content = stackL;
+            Content = scrollView;
         }
 
         public void ResetData()
@@ -71,6 +85,17 @@ namespace Morinokiseki2016Circle
             var httpClient = new System.Net.Http.HttpClient();
             //return await httpClient.GetStringAsync("http://nameka-tei.blog.jp/circles.csv");
             return await httpClient.GetStringAsync("http://nameka-tei.blog.jp/circles-utf8.csv");
+        }
+
+        public void StartActivityIndicator()
+        {
+            tempContent = Content;
+            Content = new ActivityIndicator { Color = Color.Default, IsRunning = true, VerticalOptions = LayoutOptions.CenterAndExpand };
+        }
+
+        public void StopActivityIndicator()
+        {
+            Content = tempContent;
         }
     }
 }

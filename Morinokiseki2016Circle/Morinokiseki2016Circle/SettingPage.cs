@@ -44,6 +44,7 @@ namespace Morinokiseki2016Circle
 
         private void OnClickButton(object sender, EventArgs e)
         {
+            var c = Content; Content = new ActivityIndicator { Color = Color.Default, IsRunning = true, VerticalOptions = LayoutOptions.CenterAndExpand };
             var b = (Button)sender;
             switch (b.Text)
             {
@@ -61,6 +62,7 @@ namespace Morinokiseki2016Circle
                     break;
             }
             listPage.SetData();
+            Content = c;
         }
 
         private void OnClickSearchButton(object sender, EventArgs e)

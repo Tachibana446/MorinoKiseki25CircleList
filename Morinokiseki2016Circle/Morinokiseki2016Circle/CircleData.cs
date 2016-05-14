@@ -24,18 +24,25 @@ namespace Morinokiseki2016Circle
             Genre = genre;
         }
 
-        public StackLayout GetLayout()
+        public StackLayout GetLayout(int n)
         {
+            var backCol = n % 2 == 0 ? Color.Black : Color.Gray;
             var stackLayout = new StackLayout
             {
-                Spacing = 5
+                Spacing = 5,
+                BackgroundColor = backCol
             };
-            stackLayout.Children.Add(new Label { Text = Space });
-            stackLayout.Children.Add(new Label { Text = Name });
-            stackLayout.Children.Add(new Label { Text = Author });
-            stackLayout.Children.Add(new Entry { Text = HomePage });
-            stackLayout.Children.Add(new Label { Text = Genre });
+            stackLayout.Children.Add(new Label { Text = Space, TextColor = Color.White });
+            stackLayout.Children.Add(new Label { Text = Name, TextColor = Color.White });
+            stackLayout.Children.Add(new Label { Text = Author, TextColor = Color.White });
+            stackLayout.Children.Add(new Entry { Text = HomePage, TextColor = Color.White });
+            stackLayout.Children.Add(new Label { Text = Genre, TextColor = Color.White });
             return stackLayout;
+        }
+
+        public string ToString()
+        {
+            return $"{Name} , {Author} : {Space} , {Genre} \n{HomePage}";
         }
     }
 }
