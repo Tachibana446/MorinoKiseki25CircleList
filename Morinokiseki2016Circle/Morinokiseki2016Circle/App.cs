@@ -2,30 +2,38 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Morinokiseki2016Circle
 {
+    [System.Runtime.InteropServices.ComVisible(true)]
+
+
     public class App : Application
     {
         public App()
         {
             // The root page of your application
-            MainPage = new ContentPage
+
+            var stk = new StackLayout();
+
+            var tabbedPage = new TabbedPage
             {
-                Content = new StackLayout
-                {
-                    VerticalOptions = LayoutOptions.Center,
-                    Children = {
-                        new Label {
-                            XAlign = TextAlignment.Center,
-                            Text = "Welcome to Xamarin Forms!"
-                        }
-                    }
-                }
+
             };
+
+            var listPage = new ListPage();
+            var settingPage = new SettingPage(listPage);
+
+            tabbedPage.Children.Add(listPage);
+            tabbedPage.Children.Add(settingPage);
+
+            MainPage = tabbedPage;
+
         }
+
+
 
         protected override void OnStart()
         {
