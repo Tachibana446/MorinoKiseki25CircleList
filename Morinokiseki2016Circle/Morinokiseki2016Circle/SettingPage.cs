@@ -11,6 +11,8 @@ namespace Morinokiseki2016Circle
     {
         private ListPage listPage;
 
+        Entry searchEntry;
+
         public SettingPage(ListPage parent)
         {
             Title = "ソート・検索";
@@ -24,7 +26,7 @@ namespace Morinokiseki2016Circle
             spaceSortButton.Clicked += OnClickButton;
             genreSortButton.Clicked += OnClickButton;
 
-            var searchEntry = new Entry();
+            searchEntry = new Entry();
             var searchButton = new Button() { Text = "検索" };
             var clearButton = new Button() { Text = "クリア" };
 
@@ -67,7 +69,19 @@ namespace Morinokiseki2016Circle
 
         private void OnClickSearchButton(object sender, EventArgs e)
         {
-            // TODO
+            var newList = new List<CircleData>();
+            string pattern = searchEntry.Text;
+            if (pattern == "") return;
+            foreach (var data in listPage.Data)
+            {
+                if (System.Text.RegularExpressions.Regex.IsMatch(data.Name, pattern) ||
+                    System.Text.RegularExpressions.Regex.IsMatch(data.Author, pattern))
+                {
+                    newList.Add(data);
+                }
+            }
+            listPage.Data = newList;
+            listPage.SetData();
         }
 
         private void OnClickClearButton(object sender, EventArgs e)
